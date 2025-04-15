@@ -9,7 +9,7 @@ on:
 env:
     target: https://github.com/canonical/chisel-releases.git
     # output: %y%m%d-chisel-releases.git.tar.gz
-    # release: chisel-releases.git.tar.gz
+    artifact-name: chisel-releases.git.tar.gz
 
 jobs:
   backup:
@@ -30,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ steps.backup.outputs.backup_name }}
+          name: ${{ env.artifact-name }}
           path: "*.git"
           retention-days: 90
           compression-level: 9
