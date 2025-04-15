@@ -8,8 +8,8 @@ on:
 
 env:
     target: https://github.com/canonical/chisel-releases.git
-    artifact-name: chisel-releases_%y%m%d.git.tar.gz
-    asset-name-template: chisel-releases.git.tar.gz
+    asset-name-template: chisel-releases_%y%m%d.git.tar.gz
+    artifact-name: chisel-releases.git.tar.gz
 
 jobs:
   backup:
