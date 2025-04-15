@@ -1,0 +1,39 @@
+name: Daily Backup
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' 
+
+env:
+    target: https://github.com/canonical/chisel-releases.git
+    output: chisel-releases.git.tar.gz
+    release: chisel-releases.git.tar.gz
+
+jobs:
+  backup:
+    runs-on: ubuntu-noble
+    steps:
+
+      - name: Backup
+        id: backup
+        run: |
+          git clone --mirror ${{ env.target }} 
+          tar -czf backup.tar.gz *.git
+
+          name=$(date "")
+          echo "backup_name=${name}" >> $GITHUB_OUTPUT
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ steps.backup.outputs.backup_name }}
+          path: "*.git"
+          retention-days: 90
+          compression-level: 9
+          overwrite: false
+
+
