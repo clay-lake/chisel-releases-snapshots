@@ -52,8 +52,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: backup.tar.gz
-          asset_name: ${{ steps.backup.outputs.asset_name }}
+          asset_path: ./backup.tar.gz
+          asset_name: ./backup.tar.gz # ${{ steps.backup.outputs.asset_name }}
           asset_content_type: application/gzip
 
 
