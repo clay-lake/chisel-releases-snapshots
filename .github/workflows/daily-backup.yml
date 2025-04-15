@@ -13,7 +13,7 @@ env:
 
 jobs:
   backup:
-    runs-on: ubuntu-noble
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Backup
