@@ -8,8 +8,8 @@ on:
 
 env:
     target: https://github.com/canonical/chisel-releases.git
-    output: chisel-releases.git.tar.gz
-    release: chisel-releases.git.tar.gz
+    # output: %y%m%d-chisel-releases.git.tar.gz
+    # release: chisel-releases.git.tar.gz
 
 jobs:
   backup:
@@ -22,8 +22,8 @@ jobs:
           git clone --mirror ${{ env.target }} 
           tar -czf backup.tar.gz *.git
 
-          name=$(date "")
-          echo "backup_name=${name}" >> $GITHUB_OUTPUT
+          # name=$(date "")
+          # echo "backup_name=${name}" >> $GITHUB_OUTPUT
 
       - name: Upload
         uses: actions/upload-artifact@v4
