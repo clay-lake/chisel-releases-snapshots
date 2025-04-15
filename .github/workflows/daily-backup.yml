@@ -38,11 +38,12 @@ jobs:
           compression-level: 9
           overwrite: false
 
-      - name: Get release
+      - uses: cardinalby/git-get-release-action@v1
         id: get_release
-        uses: bruceadams/get-release@v1.3.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: 'archive'    
 
       - name: Upload Asset
         # if: startsWith(github.event.schedule, '0 2 15') # Executes only on the first of each month
