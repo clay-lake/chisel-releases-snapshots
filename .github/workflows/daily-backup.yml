@@ -10,7 +10,6 @@ env:
     target: https://github.com/canonical/chisel-releases.git
     artifact-name: chisel-releases_%y%m%d.git.tar.gz
     asset-name-template: chisel-releases.git.tar.gz
-    upload_url: https://github.com/clay-lake/chisel-releases-snapshots/releases/tag/archive
 
 jobs:
   backup:
@@ -39,13 +38,19 @@ jobs:
           compression-level: 9
           overwrite: false
 
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload Asset
         # if: startsWith(github.event.schedule, '0 2 15') # Executes only on the first of each month
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ env.upload_url }}
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: backup.tar.gz
           asset_name: ${{ steps.backup.outputs.asset_name }}
           asset_content_type: application/gzip
