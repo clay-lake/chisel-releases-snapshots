@@ -11,6 +11,10 @@ env:
     asset-name-template: chisel-releases_%y%m%d.git.tar.gz
     artifact-name: chisel-releases.git.tar.gz
 
+permissions:
+  contents: write
+
+
 jobs:
   backup:
     runs-on: ubuntu-24.04
