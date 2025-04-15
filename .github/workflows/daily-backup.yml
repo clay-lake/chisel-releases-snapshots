@@ -8,8 +8,9 @@ on:
 
 env:
     target: https://github.com/canonical/chisel-releases.git
-    # output: %y%m%d-chisel-releases.git.tar.gz
-    artifact-name: chisel-releases.git.tar.gz
+    artifact-name: chisel-releases_%y%m%d.git.tar.gz
+    asset-name-template: chisel-releases.git.tar.gz
+    upload_url: https://github.com/clay-lake/chisel-releases-snapshots/releases/tag/archive
 
 jobs:
   backup:
@@ -22,10 +23,10 @@ jobs:
           git clone --mirror ${{ env.target }} 
           tar -czf backup.tar.gz *.git
 
-          # name=$(date "")
-          # echo "backup_name=${name}" >> $GITHUB_OUTPUT
+          name=$(date +"${{ env.asset-name-template }}")
+          echo "backup_name=${name}" >> $GITHUB_OUTPUT
 
-      - name: Upload
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,5 +36,16 @@ jobs:
           retention-days: 90
           compression-level: 9
           overwrite: false
+
+      - name: Upload Asset
+        if: startsWith(github.event.schedule, '0 2 15') # Executes only on the first of each month
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ env.upload_url }}
+          asset_path: backup.tar.gz
+          asset_name: ${{ steps.backup.outputs.asset_name }}
+          asset_content_type: application/gzip
 
 
